@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS Animations</title>
     <style>
-      .heading {
-        text-align: center;
-        font-size: x-large;
-      }
-
       @keyframes slide-cover {
         from {
           left: -100%;
@@ -18,7 +13,10 @@
           left: 0;
         }
       }
-
+      .heading {
+        text-align: center;
+        font-size: x-large;
+      }
       .anim-list {
         user-select: none;
       }
@@ -26,7 +24,17 @@
         position: relative;
         display: inline-block;
         vertical-align: top;
-        width: 16rem;
+        width: 18rem;
+      }
+      .anim-frame-outer:has(.anim-name-check:checked) {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        box-sizing: border-box;
+        z-index: 9999;
       }
       .anim-frame-outer::after {
         content: "";
@@ -44,18 +52,15 @@
         border: 2px solid gray;
         box-shadow: 0.5em 0.5em 0 0 lightgray;
       }
-      .anim-box-outer {
-        padding: 0.5rem;
-        flex-grow: 1;
-      }
-      .anim-box-inner {
-        width: 100%;
-        height: 100%;
-        position: relative;
-      }
       .anim-name-outer {
         position: relative;
         border-bottom: 2px solid gray;
+      }
+      .anim-name-outer:has(.anim-name-check:checked) ~ .anim-box-outer {
+        display: none;
+      }
+      .anim-name-outer:has(.anim-name-check:checked) ~ .anim-source-outer {
+        display: unset;
       }
       .anim-name-inner {
         position: relative;
@@ -64,13 +69,16 @@
         overflow: hidden;
         cursor: pointer;
       }
-      .anim-name-view-source {
+      .anim-name-inner:hover > .anim-name-text {
         display: none;
       }
       .anim-name-inner:hover > .anim-name-view-source {
         display: unset;
       }
-      .anim-name-inner:hover > .anim-name-text {
+      .anim-name-inner:has(.anim-name-check:checked):hover > .anim-name-close-source {
+        display: unset;
+      }
+      .anim-name-inner:has(.anim-name-check:checked):hover > .anim-name-view-source {
         display: none;
       }
       .anim-name-inner::after {
@@ -86,45 +94,67 @@
       .anim-name-inner:hover::after {
         animation: slide-cover 0.125s linear 0s 1 normal forwards;
       }
-
-      .anim-name-radio {
+      .anim-name-check {
         position: absolute;
         width: 0;
         height: 0;
       }
-      .source-code-layer {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        backdrop-filter: blur(4px);
-        z-index: 9999;
-      }
-      .source-code-layer:has(.anim-name-radio:checked) {
+      .anim-name-view-source {
         display: none;
       }
-      .source-code-layer-viewer {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 75%;
-        height: 75%;
-        transform: translate(-50%, -50%);
-        border: 2px solid gray;
+      .anim-name-close-source {
+        display: none;
       }
-      
-      @media screen and (max-width: 425px) {
-        .source-code-layer-viewer {
-          width: 100%;
-          height: 100%;
-        }
+      .anim-box-outer {
+        padding: 0.5rem;
+        flex-grow: 1;
+      }
+      .anim-box-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+      .anim-source-outer {
+        display: none;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      .anim-source-inner {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .anim-source-pre {
+        margin: 0;
+        padding: 0.25rem 0.5rem;
+        width: 100%;
+        height: 100%;
+        counter-reset: line;
+        user-select: text;
+        overflow: auto;
+        box-sizing: border-box;
+      }
+      .anim-source-pre code {
+        counter-increment: line;
+      }
+      .anim-source-pre code:before {
+        content: counter(line);
+        display: inline-block;
+        margin-right: 0.25rem;
+        padding-right: 0.25rem;
+        width: 2rem;
+        text-align: right;
+        border-right: 1px solid gray;
+        box-sizing: border-box;
+      }
+      @media screen and (max-width: 480px) {
         .anim-frame-outer {
           width: 100%;
         }
       }
-
-      /* custom switch begin */
+      /* custom-switch begin */
       @keyframes custom-switch-toggle-ball {
         from {
           left: 0;
@@ -140,6 +170,9 @@
         to {
           left: 0;
         }
+      }
+      .custom-switch-switch:has(.custom-switch-check:checked) ~ .custom-switch-content {
+        display: unset;
       }
       .custom-switch-label {
         user-select: none;
@@ -189,23 +222,19 @@
         width: 0;
         height: 0;
       }
-      .custom-switch-text-on {
-        display: none;
-      }
       .custom-switch-check:checked ~ .custom-switch-text-on {
         display: unset;
       }
       .custom-switch-check:checked ~ .custom-switch-text-off {
         display: none;
       }
+      .custom-switch-text-on {
+        display: none;
+      }
       .custom-switch-content {
         display: none;
       }
-      .custom-switch:has(.custom-switch-check:checked) ~ .custom-switch-content {
-        display: unset;
-      }
-      /* custom switch end */
-
+      /* custom-switch end */
       /* loading begin */
       @keyframes loading-rotate {
         from {
@@ -215,7 +244,31 @@
           transform: rotate(360deg);
         }
       }
-
+      .loading-mode:has(.loading-mode-radio[value="linear"]:checked)
+        ~ .loading-area
+        > .loading-circle {
+        animation: loading-rotate 1s linear 0s infinite normal forwards;
+      }
+      .loading-mode:has(.loading-mode-radio[value="ease"]:checked)
+        ~ .loading-area
+        > .loading-circle {
+        animation: loading-rotate 1s ease 0s infinite normal forwards;
+      }
+      .loading-mode:has(.loading-mode-radio[value="ease-in"]:checked)
+        ~ .loading-area
+        > .loading-circle {
+        animation: loading-rotate 1s ease-in 0s infinite normal forwards;
+      }
+      .loading-mode:has(.loading-mode-radio[value="ease-out"]:checked)
+        ~ .loading-area
+        > .loading-circle {
+        animation: loading-rotate 1s ease-out 0s infinite normal forwards;
+      }
+      .loading-mode:has(.loading-mode-radio[value="ease-in-out"]:checked)
+        ~ .loading-area
+        > .loading-circle {
+        animation: loading-rotate 1s ease-in-out 0s infinite normal forwards;
+      }
       .loading-mode-tab {
         margin: 0.125rem;
         padding: 0 0.5rem;
@@ -232,7 +285,7 @@
         width: 0;
         height: 0;
       }
-      .loading {
+      .loading-area {
         position: absolute;
         width: 4rem;
         height: 4rem;
@@ -260,25 +313,6 @@
         background-color: #ffffff;
         z-index: 1;
       }
-      .loading-mode:has(.loading-mode-radio[value="linear"]:checked) ~ .loading > .loading-circle {
-        animation: loading-rotate 1s linear 0s infinite normal forwards;
-      }
-      .loading-mode:has(.loading-mode-radio[value="ease"]:checked) ~ .loading > .loading-circle {
-        animation: loading-rotate 1s ease 0s infinite normal forwards;
-      }
-      .loading-mode:has(.loading-mode-radio[value="ease-in"]:checked) ~ .loading > .loading-circle {
-        animation: loading-rotate 1s ease-in 0s infinite normal forwards;
-      }
-      .loading-mode:has(.loading-mode-radio[value="ease-out"]:checked)
-        ~ .loading
-        > .loading-circle {
-        animation: loading-rotate 1s ease-out 0s infinite normal forwards;
-      }
-      .loading-mode:has(.loading-mode-radio[value="ease-in-out"]:checked)
-        ~ .loading
-        > .loading-circle {
-        animation: loading-rotate 1s ease-in-out 0s infinite normal forwards;
-      }
       /* loading end */
     </style>
   </head>
@@ -293,32 +327,139 @@
             <label class="anim-name-label">
               <div class="anim-name-inner">
                 <input
-                  class="anim-name-radio"
-                  type="radio"
-                  name="anim-name-radio"
+                  class="anim-name-check"
+                  type="checkbox"
+                  name="anim-name-check"
                   value="custon-switch-bar"
                 />
                 <span class="anim-name-text">Custom Switch Bar</span>
                 <span class="anim-name-view-source">View Source</span>
+                <span class="anim-name-close-source">Close</span>
               </div>
             </label>
           </div>
           <div class="anim-box-outer">
             <div class="anim-box-inner">
               <div class="custom-switch">
-                <label class="custom-switch-label">
-                  <input class="custom-switch-check" type="checkbox" />
-                  <div class="custom-switch-bar">
-                    <div class="custom-switch-ball"></div>
-                  </div>
-                  <span class="custom-switch-text-on">Show</span>
-                  <span class="custom-switch-text-off">Hide</span>
-                </label>
+                <div class="custom-switch-switch">
+                  <label class="custom-switch-label">
+                    <input class="custom-switch-check" type="checkbox" />
+                    <div class="custom-switch-bar">
+                      <div class="custom-switch-ball"></div>
+                    </div>
+                    <span class="custom-switch-text-on">Show</span>
+                    <span class="custom-switch-text-off">Hide</span>
+                  </label>
+                </div>
+                <div class="custom-switch-content">
+                  Lorem ipsum dolor sit amet at gubergren. Duis sea justo magna accusam labore stet
+                  amet sanctus eu accusam clita duo. Ut consequat clita at amet aliquyam takimata
+                  duis aliquam sit.
+                </div>
               </div>
-              <div class="custom-switch-content">
-                Lorem ipsum dolor sit amet aliquam ea sed est vero dolor magna euismod dolore
-                aliquyam amet iriure nonumy in elitr sed.
-              </div>
+            </div>
+          </div>
+          <div class="anim-source-outer">
+            <div class="anim-source-inner">
+              <pre class="anim-source-pre">
+<code>&lt;style&gt;</code>
+<code>  @keyframes custom-switch-toggle-ball {</code>
+<code>    from {</code>
+<code>      left: 0;</code>
+<code>    }</code>
+<code>    to {</code>
+<code>      left: 100%;</code>
+<code>    }</code>
+<code>  }</code>
+<code>  @keyframes custom-switch-toggle-ball-back {</code>
+<code>    from {</code>
+<code>      left: 100%;</code>
+<code>    }</code>
+<code>    to {</code>
+<code>      left: 0;</code>
+<code>    }</code>
+<code>  }</code>
+<code>  .custom-switch-switch:has(.custom-switch-check:checked) ~ .custom-switch-content {</code>
+<code>    display: unset;</code>
+<code>  }</code>
+<code>  .custom-switch-label {</code>
+<code>    user-select: none;</code>
+<code>    cursor: pointer;</code>
+<code>  }</code>
+<code>  .custom-switch-bar {</code>
+<code>    position: relative;</code>
+<code>    display: inline-block;</code>
+<code>    width: 1rem;</code>
+<code>    height: 0.5rem;</code>
+<code>    margin: 0.125em 0.5rem;</code>
+<code>    background-color: lightgray;</code>
+<code>  }</code>
+<code>  .custom-switch-bar::before {</code>
+<code>    content: &quot;&quot;;</code>
+<code>    position: absolute;</code>
+<code>    right: -0.25rem;</code>
+<code>    width: 0.5rem;</code>
+<code>    height: 0.5rem;</code>
+<code>    border-radius: 50%;</code>
+<code>    background-color: inherit;</code>
+<code>  }</code>
+<code>  .custom-switch-bar::after {</code>
+<code>    content: &quot;&quot;;</code>
+<code>    position: absolute;</code>
+<code>    left: -0.25rem;</code>
+<code>    width: 0.5rem;</code>
+<code>    height: 0.5rem;</code>
+<code>    border-radius: 50%;</code>
+<code>    background-color: inherit;</code>
+<code>  }</code>
+<code>  .custom-switch-ball {</code>
+<code>    position: absolute;</code>
+<code>    margin: -0.125em -0.375rem;</code>
+<code>    width: 0.75rem;</code>
+<code>    height: 0.75rem;</code>
+<code>    border-radius: 50%;</code>
+<code>    background-color: black;</code>
+<code>    z-index: 1;</code>
+<code>    animation: custom-switch-toggle-ball-back 0.125s ease-out 0s 1 normal forwards;</code>
+<code>  }</code>
+<code>  .custom-switch-check:checked ~ .custom-switch-bar &gt; .custom-switch-ball {</code>
+<code>    animation: custom-switch-toggle-ball 0.125s ease-out 0s 1 normal forwards;</code>
+<code>  }</code>
+<code>  .custom-switch-check {</code>
+<code>    position: absolute;</code>
+<code>    width: 0;</code>
+<code>    height: 0;</code>
+<code>  }</code>
+<code>  .custom-switch-check:checked ~ .custom-switch-text-on {</code>
+<code>    display: unset;</code>
+<code>  }</code>
+<code>  .custom-switch-check:checked ~ .custom-switch-text-off {</code>
+<code>    display: none;</code>
+<code>  }</code>
+<code>  .custom-switch-text-on {</code>
+<code>    display: none;</code>
+<code>  }</code>
+<code>  .custom-switch-content {</code>
+<code>    display: none;</code>
+<code>  }</code>
+<code>&lt;/style&gt;</code>
+<code>&lt;div class=&quot;custom-switch&quot;&gt;</code>
+<code>  &lt;div class=&quot;custom-switch-switch&quot;&gt;</code>
+<code>    &lt;label class=&quot;custom-switch-label&quot;&gt;</code>
+<code>      &lt;input class=&quot;custom-switch-check&quot; type=&quot;checkbox&quot; /&gt;</code>
+<code>      &lt;div class=&quot;custom-switch-bar&quot;&gt;</code>
+<code>        &lt;div class=&quot;custom-switch-ball&quot;&gt;&lt;/div&gt;</code>
+<code>      &lt;/div&gt;</code>
+<code>      &lt;span class=&quot;custom-switch-text-on&quot;&gt;Show&lt;/span&gt;</code>
+<code>      &lt;span class=&quot;custom-switch-text-off&quot;&gt;Hide&lt;/span&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>  &lt;/div&gt;</code>
+<code>  &lt;div class=&quot;custom-switch-content&quot;&gt;</code>
+<code>    Lorem ipsum dolor sit amet at gubergren. Duis sea justo magna accusam labore stet amet sanctus</code>
+<code>    eu accusam clita duo. Ut consequat clita at amet aliquyam takimata duis aliquam sit.</code>
+<code>  &lt;/div&gt;</code>
+<code>&lt;/div&gt;</code>
+<code></code></pre>
             </div>
           </div>
         </div>
@@ -329,99 +470,216 @@
             <label class="anim-name-label">
               <div class="anim-name-inner">
                 <input
-                  class="anim-name-radio"
-                  type="radio"
-                  name="anim-name-radio"
+                  class="anim-name-check"
+                  type="checkbox"
+                  name="anim-name-check"
                   value="loading"
                 />
-                <span class="anim-name-text">Custom Switch Bar</span>
+                <span class="anim-name-text">Loading</span>
                 <span class="anim-name-view-source">View Source</span>
+                <span class="anim-name-close-source">Close</span>
               </div>
             </label>
           </div>
           <div class="anim-box-outer">
             <div class="anim-box-inner">
-              <div class="loading-mode">
-                <label class="loading-mode-label">
-                  <div class="loading-mode-tab">
-                    <input class="loading-mode-radio" type="radio" name="loading-radio" checked />
-                    None
-                  </div>
-                </label>
-                <label class="loading-mode-label">
-                  <div class="loading-mode-tab">
-                    <input
-                      class="loading-mode-radio"
-                      type="radio"
-                      name="loading-radio"
-                      value="linear"
-                    />
-                    Linear
-                  </div>
-                </label>
-                <label class="loading-mode-label">
-                  <div class="loading-mode-tab">
-                    <input
-                      class="loading-mode-radio"
-                      type="radio"
-                      name="loading-radio"
-                      value="ease"
-                    />
-                    Ease
-                  </div>
-                </label>
-
-                <label class="loading-mode-label">
-                  <div class="loading-mode-tab">
-                    <input
-                      class="loading-mode-radio"
-                      type="radio"
-                      name="loading-radio"
-                      value="ease-in"
-                    />
-                    Ease-In
-                  </div>
-                </label>
-                <label class="loading-mode-label">
-                  <div class="loading-mode-tab">
-                    <input
-                      class="loading-mode-radio"
-                      type="radio"
-                      name="loading-radio"
-                      value="ease-out"
-                    />
-                    Ease-Out
-                  </div>
-                </label>
-                <label class="loading-mode-label">
-                  <div class="loading-mode-tab">
-                    <input
-                      class="loading-mode-radio"
-                      type="radio"
-                      name="loading-radio"
-                      value="ease-in-out"
-                    />
-                    Ease-In-Out
-                  </div>
-                </label>
-              </div>
               <div class="loading">
-                <div class="loading-circle"></div>
+                <div class="loading-mode">
+                  <label class="loading-mode-label">
+                    <div class="loading-mode-tab">
+                      <input class="loading-mode-radio" type="radio" name="loading-radio" checked />
+                      None
+                    </div>
+                  </label>
+                  <label class="loading-mode-label">
+                    <div class="loading-mode-tab">
+                      <input
+                        class="loading-mode-radio"
+                        type="radio"
+                        name="loading-radio"
+                        value="linear"
+                      />
+                      Linear
+                    </div>
+                  </label>
+                  <label class="loading-mode-label">
+                    <div class="loading-mode-tab">
+                      <input
+                        class="loading-mode-radio"
+                        type="radio"
+                        name="loading-radio"
+                        value="ease"
+                      />
+                      Ease
+                    </div>
+                  </label>
+                  <label class="loading-mode-label">
+                    <div class="loading-mode-tab">
+                      <input
+                        class="loading-mode-radio"
+                        type="radio"
+                        name="loading-radio"
+                        value="ease-in"
+                      />
+                      Ease-In
+                    </div>
+                  </label>
+                  <label class="loading-mode-label">
+                    <div class="loading-mode-tab">
+                      <input
+                        class="loading-mode-radio"
+                        type="radio"
+                        name="loading-radio"
+                        value="ease-out"
+                      />
+                      Ease-Out
+                    </div>
+                  </label>
+                  <label class="loading-mode-label">
+                    <div class="loading-mode-tab">
+                      <input
+                        class="loading-mode-radio"
+                        type="radio"
+                        name="loading-radio"
+                        value="ease-in-out"
+                      />
+                      Ease-In-Out
+                    </div>
+                  </label>
+                </div>
+                <div class="loading-area">
+                  <div class="loading-circle"></div>
+                </div>
               </div>
+            </div>
+          </div>
+          <div class="anim-source-outer">
+            <div class="anim-source-inner">
+              <pre class="anim-source-pre">
+<code>&lt;style&gt;</code>
+<code>  @keyframes loading-rotate {</code>
+<code>    from {</code>
+<code>      transform: rotate(0deg);</code>
+<code>    }</code>
+<code>    to {</code>
+<code>      transform: rotate(360deg);</code>
+<code>    }</code>
+<code>  }</code>
+<code>  .loading-mode:has(.loading-mode-radio[value=&quot;linear&quot;]:checked) ~ .loading-area &gt; .loading-circle {</code>
+<code>    animation: loading-rotate 1s linear 0s infinite normal forwards;</code>
+<code>  }</code>
+<code>  .loading-mode:has(.loading-mode-radio[value=&quot;ease&quot;]:checked) ~ .loading-area &gt; .loading-circle {</code>
+<code>    animation: loading-rotate 1s ease 0s infinite normal forwards;</code>
+<code>  }</code>
+<code>  .loading-mode:has(.loading-mode-radio[value=&quot;ease-in&quot;]:checked)</code>
+<code>    ~ .loading-area</code>
+<code>    &gt; .loading-circle {</code>
+<code>    animation: loading-rotate 1s ease-in 0s infinite normal forwards;</code>
+<code>  }</code>
+<code>  .loading-mode:has(.loading-mode-radio[value=&quot;ease-out&quot;]:checked)</code>
+<code>    ~ .loading-area</code>
+<code>    &gt; .loading-circle {</code>
+<code>    animation: loading-rotate 1s ease-out 0s infinite normal forwards;</code>
+<code>  }</code>
+<code>  .loading-mode:has(.loading-mode-radio[value=&quot;ease-in-out&quot;]:checked)</code>
+<code>    ~ .loading-area</code>
+<code>    &gt; .loading-circle {</code>
+<code>    animation: loading-rotate 1s ease-in-out 0s infinite normal forwards;</code>
+<code>  }</code>
+<code>  .loading-mode-tab {</code>
+<code>    margin: 0.125rem;</code>
+<code>    padding: 0 0.5rem;</code>
+<code>    display: inline-block;</code>
+<code>    border: 2px solid gray;</code>
+<code>    border-radius: 9999px;</code>
+<code>    cursor: pointer;</code>
+<code>  }</code>
+<code>  .loading-mode-tab:has(.loading-mode-radio:checked) {</code>
+<code>    background-color: lightgray;</code>
+<code>  }</code>
+<code>  .loading-mode-radio {</code>
+<code>    position: absolute;</code>
+<code>    width: 0;</code>
+<code>    height: 0;</code>
+<code>  }</code>
+<code>  .loading-area {</code>
+<code>    position: absolute;</code>
+<code>    width: 4rem;</code>
+<code>    height: 4rem;</code>
+<code>    left: 50%;</code>
+<code>    top: 62.5%;</code>
+<code>    transform: translate(-50%, -50%);</code>
+<code>    background-color: #ffffff;</code>
+<code>  }</code>
+<code>  .loading-circle {</code>
+<code>    position: absolute;</code>
+<code>    width: 100%;</code>
+<code>    height: 100%;</code>
+<code>    border-radius: 50%;</code>
+<code>    background: conic-gradient(#ffffff, #000000);</code>
+<code>  }</code>
+<code>  .loading-circle::after {</code>
+<code>    content: &quot;&quot;;</code>
+<code>    position: absolute;</code>
+<code>    width: 75%;</code>
+<code>    height: 75%;</code>
+<code>    left: 50%;</code>
+<code>    top: 50%;</code>
+<code>    transform: translate(-50%, -50%);</code>
+<code>    border-radius: 50%;</code>
+<code>    background-color: #ffffff;</code>
+<code>    z-index: 1;</code>
+<code>  }</code>
+<code>&lt;/style&gt;</code>
+<code>&lt;div class=&quot;loading&quot;&gt;</code>
+<code>  &lt;div class=&quot;loading-mode&quot;&gt;</code>
+<code>    &lt;label class=&quot;loading-mode-label&quot;&gt;</code>
+<code>      &lt;div class=&quot;loading-mode-tab&quot;&gt;</code>
+<code>        &lt;input class=&quot;loading-mode-radio&quot; type=&quot;radio&quot; name=&quot;loading-radio&quot; checked /&gt;</code>
+<code>        None</code>
+<code>      &lt;/div&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>    &lt;label class=&quot;loading-mode-label&quot;&gt;</code>
+<code>      &lt;div class=&quot;loading-mode-tab&quot;&gt;</code>
+<code>        &lt;input class=&quot;loading-mode-radio&quot; type=&quot;radio&quot; name=&quot;loading-radio&quot; value=&quot;linear&quot; /&gt;</code>
+<code>        Linear</code>
+<code>      &lt;/div&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>    &lt;label class=&quot;loading-mode-label&quot;&gt;</code>
+<code>      &lt;div class=&quot;loading-mode-tab&quot;&gt;</code>
+<code>        &lt;input class=&quot;loading-mode-radio&quot; type=&quot;radio&quot; name=&quot;loading-radio&quot; value=&quot;ease&quot; /&gt;</code>
+<code>        Ease</code>
+<code>      &lt;/div&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>    &lt;label class=&quot;loading-mode-label&quot;&gt;</code>
+<code>      &lt;div class=&quot;loading-mode-tab&quot;&gt;</code>
+<code>        &lt;input class=&quot;loading-mode-radio&quot; type=&quot;radio&quot; name=&quot;loading-radio&quot; value=&quot;ease-in&quot; /&gt;</code>
+<code>        Ease-In</code>
+<code>      &lt;/div&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>    &lt;label class=&quot;loading-mode-label&quot;&gt;</code>
+<code>      &lt;div class=&quot;loading-mode-tab&quot;&gt;</code>
+<code>        &lt;input class=&quot;loading-mode-radio&quot; type=&quot;radio&quot; name=&quot;loading-radio&quot; value=&quot;ease-out&quot; /&gt;</code>
+<code>        Ease-Out</code>
+<code>      &lt;/div&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>    &lt;label class=&quot;loading-mode-label&quot;&gt;</code>
+<code>      &lt;div class=&quot;loading-mode-tab&quot;&gt;</code>
+<code>        &lt;input class=&quot;loading-mode-radio&quot; type=&quot;radio&quot; name=&quot;loading-radio&quot; value=&quot;ease-in-out&quot; /&gt;</code>
+<code>        Ease-In-Out</code>
+<code>      &lt;/div&gt;</code>
+<code>    &lt;/label&gt;</code>
+<code>  &lt;/div&gt;</code>
+<code>  &lt;div class=&quot;loading-area&quot;&gt;</code>
+<code>    &lt;div class=&quot;loading-circle&quot;&gt;&lt;/div&gt;</code>
+<code>  &lt;/div&gt;</code>
+<code>&lt;/div&gt;</code>
+<code></code></pre>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="source-code-layer">
-      <div class="source-code-layer-viewer">
-        <label class="source-code-layer-label">
-          <div class="source-code-layer-close">
-            <input class="anim-name-radio" type="radio" name="anim-name-radio" checked />
-            <span>Close</span>
-          </div>
-        </label>
-      </div>
-    </div>
+    <div class="blur-layer"></div>
   </body>
 </html>

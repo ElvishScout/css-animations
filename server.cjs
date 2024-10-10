@@ -5,10 +5,11 @@ const path = require("node:path");
 const { generateIndex } = require("./generate-index.cjs");
 
 const homeDir = process.env.HOME_DIR ?? __dirname;
+const animationsDir = path.join(homeDir, "animations/");
 const port = (process.env.PORT && parseInt(process.env.PORT)) ?? 8080;
 
 let htmlText = "";
-fs.watch(homeDir, () => {
+fs.watch(animationsDir, () => {
   htmlText = generateIndex();
 });
 

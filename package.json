@@ -1,7 +1,7 @@
 {
   "name": "css-animations",
   "version": "1.0.0",
-  "description": "HTML animations using pure CSS, without a single line of JavaScript involved.",
+  "description": "CSS animation demos, no JavaScript required.",
   "author": "Jiang Jiakai",
   "dependencies": {
     "ejs": "^3.1.10"

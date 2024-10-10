@@ -2,42 +2,14 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 
-const ejs = require("ejs");
+const { generateIndex } = require("./generate-index.cjs");
 
-const homeDir = process.env.HOME_DIR || __dirname;
-const port = process.env.PORT || 8080;
-
-const templatePath = path.join(homeDir, "template.ejs");
-const animationsDir = path.join(homeDir, "animations/");
-
-function generateHtmlText() {
-  const template = ejs.compile(fs.readFileSync(templatePath).toString());
-
-  const animations = fs.readdirSync(animationsDir).map((file) => {
-    const fileText = fs.readFileSync(path.join(animationsDir, file)).toString().replace(/\r/g, "");
-
-    const name = /^(.*)\./.exec(file)[1];
-    const style = /<style.*?<\/style>/is.exec(fileText)[0];
-    const div = /<div.*<\/div>/is.exec(fileText)[0];
-    const source = fileText
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;")
-      .split("\n")
-      .map((line) => `<code>${line}</code>`)
-      .join("\n");
-
-    return { name, style, div, source };
-  });
-
-  return template({ animations });
-}
+const homeDir = process.env.HOME_DIR ?? __dirname;
+const port = (process.env.PORT && parseInt(process.env.PORT)) ?? 8080;
 
 let htmlText = "";
 fs.watch(homeDir, () => {
-  htmlText = generateHtmlText();
+  htmlText = generateIndex();
 });
 
 const server = http.createServer((request, response) => {
@@ -46,7 +18,7 @@ const server = http.createServer((request, response) => {
   }
 
   if (!htmlText) {
-    htmlText = generateHtmlText();
+    htmlText = generateIndex();
   }
 
   response.writeHead(200, { "Content-Type": "text/html" });

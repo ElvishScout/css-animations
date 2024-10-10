@@ -9,7 +9,7 @@ const templatePath = path.join(homeDir, "template.ejs");
 const animationsDir = path.join(homeDir, "animations/");
 const outputPath = path.join(homeDir, "index.html");
 
-function generateIndex() {
+function generateIndex({ injectedScript } = {}) {
   const template = ejs.compile(fs.readFileSync(templatePath).toString());
 
   const animations = fs.readdirSync(animationsDir).map((file) => {
@@ -31,7 +31,7 @@ function generateIndex() {
     return { name, style, div, source };
   });
 
-  return template({ animations });
+  return template({ animations, injectedScript });
 }
 
 if (require.main === module) {

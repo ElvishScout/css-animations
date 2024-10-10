@@ -49,9 +49,9 @@ indexText = generateIndex({ injectedScript });
 fs.watch(animationsDir, () => {
   indexText = generateIndex({ injectedScript });
 
-  for (let i = connectingClients.length - 1; i >= 0; i--) {
-    connectingClients[i].write("data: refresh\n\n");
-  }
+  connectingClients.forEach((client) => {
+    client.write("data: refresh\n\n");
+  });
 });
 
 server.listen(port);

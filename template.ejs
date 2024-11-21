@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS Animations</title>
     <style>
-      @keyframes slide-cover {
-        from {
-          left: -100%;
-        }
-        to {
-          left: 0;
-        }
+      :root {
+        font-size: 16px;
+        font-family: "Times New Roman", Times, serif;
+      }
+      pre {
+        font-size: 0.9rem;
+        font-family: "Courier New", Courier, monospace;
+      }
+      h1 {
+        margin: 1.5rem 0;
+        font-size: 1.5rem;
+        font-weight: normal;
       }
       .heading {
         text-align: center;
-        font-size: x-large;
       }
       .anim-list {
         user-select: none;
@@ -90,9 +94,10 @@
         height: 100%;
         background: linear-gradient(to right, white, lightgray);
         z-index: -1;
+        transition: left 0.1s ease-out;
       }
       .anim-name-inner:hover::after {
-        animation: slide-cover 0.125s linear 0s 1 normal forwards;
+        left: 0%;
       }
       .anim-name-check {
         position: absolute;
@@ -158,9 +163,7 @@
     <% animations.forEach(({style}) => { %> <%- style %> <% }) %>
   </head>
   <body>
-    <div>
-      <p class="heading">CSS Animations</p>
-    </div>
+    <h1 class="heading">CSS Animations</h1>
     <div class="anim-list">
       <% animations.forEach(({name, div, source}) => { %>
       <div class="anim-frame-outer">
@@ -192,9 +195,10 @@
       </div>
       <% }) %>
     </div>
-    <div class="blur-layer"></div>
     <% if (injectedScript) { %>
-    <script><%- `(${injectedScript})()` %></script>
+    <script>
+      <%- `(${injectedScript})()` %>
+    </script>
     <% } %>
   </body>
 </html>

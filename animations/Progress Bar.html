@@ -1,0 +1,140 @@
+<style>
+  @keyframes progress-bar-move {
+    from {
+      left: -100%;
+    }
+    to {
+      left: 0%;
+    }
+  }
+  @keyframes progress-bar-glow {
+    from {
+      left: -400%;
+    }
+    to {
+      left: 0%;
+    }
+  }
+
+  .progress-bar-control:has(.progress-bar-control-radio[value="start"]:checked)
+    > .progress-bar-control-label-start {
+    display: none;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="start"]:checked)
+    > .progress-bar-control-label-reset {
+    display: none;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="stop"]:checked)
+    > .progress-bar-control-label-start {
+    display: none;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="stop"]:checked)
+    > .progress-bar-control-label-stop {
+    display: none;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="reset"]:checked)
+    > .progress-bar-control-label-stop {
+    display: none;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="reset"]:checked)
+    > .progress-bar-control-label-reset {
+    display: none;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="stop"]:checked)
+    ~ .progress-bar-area
+    .progress-bar-outer {
+    animation-play-state: paused;
+  }
+  .progress-bar-control:has(.progress-bar-control-radio[value="reset"]:checked)
+    ~ .progress-bar-area
+    .progress-bar-outer {
+    animation: none;
+  }
+  .progress-bar-control-radio {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .progress-bar-control-button {
+    margin: 0.125rem;
+    padding: 0 0.5rem;
+    display: inline-block;
+    width: 4rem;
+    border: 2px solid gray;
+    text-align: center;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+
+  .progress-bar-area {
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 1.5rem;
+    outline: 2px solid gray;
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+  .progress-bar-outer {
+    position: absolute;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    animation: progress-bar-move 60s linear 0s 1 normal forwards;
+  }
+  .progress-bar-inner {
+    position: absolute;
+    width: 500%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      #00cc00,
+      #00cc00 45%,
+      #ccff00 50%,
+      #00cc00 55%,
+      #00cc00 100%
+    );
+    animation: progress-bar-glow 5s linear 0s infinite normal none;
+  }
+</style>
+<div class="progress-bar">
+  <div class="progress-bar-control">
+    <label class="progress-bar-control-label-start">
+      <input
+        class="progress-bar-control-radio"
+        type="radio"
+        name="progress-bar-control"
+        value="start"
+      />
+      <div class="progress-bar-control-button">Start</div>
+    </label>
+    <label class="progress-bar-control-label-stop">
+      <input
+        class="progress-bar-control-radio"
+        type="radio"
+        name="progress-bar-control"
+        value="stop"
+      />
+      <div class="progress-bar-control-button">Stop</div>
+    </label>
+    <label class="progress-bar-control-label-reset">
+      <input
+        class="progress-bar-control-radio"
+        type="radio"
+        name="progress-bar-control"
+        value="reset"
+        checked
+      />
+      <div class="progress-bar-control-button">Reset</div>
+    </label>
+  </div>
+  <div class="progress-bar-area">
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner"></div>
+    </div>
+  </div>
+</div>

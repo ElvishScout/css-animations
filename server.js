@@ -2,16 +2,16 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 const url = require("node:url");
+const chokidar = require("chokidar");
+const { generateIndex } = require("./generate-index");
 
-const { generateIndex } = require("./generate-index.cjs");
-
-const homeDir = process.env.HOME_DIR ?? __dirname;
-const animationsDir = path.join(homeDir, "animations/");
+const configPath = process.env.CONFIG_PATH || "config.json";
+const host = process.env.HOST || "localhost";
 const port = (process.env.PORT && parseInt(process.env.PORT)) ?? 8080;
 
 let indexText;
 
-const connectingClients = [];
+const connectedClients = [];
 const server = http.createServer((request, response) => {
   const path = url.parse(request.url).pathname;
   switch (path) {
@@ -20,7 +20,7 @@ const server = http.createServer((request, response) => {
       response.end(indexText);
       return;
     case "/refresh":
-      connectingClients.push(response);
+      connectedClients.push(response);
       response.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
@@ -30,7 +30,7 @@ const server = http.createServer((request, response) => {
       response.write("retry: 10000\n");
       response.write("event: refresh\n");
       request.on("close", () => {
-        connectingClients.splice(connectingClients.indexOf(response), 1);
+        connectedClients.splice(connectedClients.indexOf(response), 1);
       });
       return;
     case "/favicon.ico":
@@ -45,14 +45,21 @@ const injectedScript = (() => {
   });
 }).toString();
 
-indexText = generateIndex({ injectedScript });
-fs.watch(animationsDir, () => {
-  indexText = generateIndex({ injectedScript });
+const update = () => {
+  const config = JSON.parse(fs.readFileSync(configPath).toString());
+  indexText = generateIndex({ config, injectedScript });
+};
 
-  connectingClients.forEach((client) => {
+update();
+chokidar.watch(__dirname, { ignoreInitial: true }).on("all", (_, file) => {
+  update();
+  connectedClients.forEach((client) => {
     client.write("data: refresh\n\n");
   });
+  if (file) {
+    console.log(`Update ${path.basename(file)}`);
+  }
 });
 
-server.listen(port);
-console.log(`Server listening on port ${port}`);
+server.listen(port, host);
+console.log(`Server listening on http://${host}:${port}`);

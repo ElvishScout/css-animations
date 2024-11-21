@@ -1,0 +1,5 @@
+{
+  "templatePath": "template.ejs",
+  "animationsDir": "animations",
+  "outputDir": "dist"
+}

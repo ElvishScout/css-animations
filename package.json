@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "CSS animation demos, no JavaScript required.",
   "author": "Jiang Jiakai",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "node generate-index.js"
+  },
   "dependencies": {
     "ejs": "^3.1.10"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.1"
   }
 }

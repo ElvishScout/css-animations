@@ -7,11 +7,13 @@ CSS animation demos, no JavaScript required.
 To start a development server:
 
 ```shell
-node ./server.cjs
+npm run dev
 ```
 
-To generate single-file HTML from source:
+To generate a single-file HTML from source:
 
 ```shell
-node ./generate-index.cjs
+npm run build
 ```
+
+The deafult output directory is `dist`.

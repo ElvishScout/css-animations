@@ -9,6 +9,9 @@
         font-size: 16px;
         font-family: "Times New Roman", Times, serif;
       }
+      body {
+        overscroll-behavior: none;
+      }
       pre {
         font-size: 0.9rem;
         font-family: "Courier New", Courier, monospace;
@@ -31,7 +34,7 @@
         width: 18rem;
       }
       .anim-frame-outer:has(.anim-name-check:checked) {
-        position: fixed;
+        position: absolute;
         left: 0;
         top: 0;
         width: 100%;
@@ -94,10 +97,10 @@
         height: 100%;
         background: linear-gradient(to right, white, lightgray);
         z-index: -1;
-        transition: left 0.1s ease-out;
+        transition: left 0.2s ease-out;
       }
       .anim-name-inner:hover::after {
-        left: 0%;
+        left: 0;
       }
       .anim-name-check {
         position: absolute;
@@ -154,9 +157,27 @@
         border-right: 1px solid gray;
         box-sizing: border-box;
       }
-      @media screen and (max-width: 480px) {
+      .anim-frame-outer {
+        width: 100%;
+      }
+      @media (min-width: 512px) {
         .anim-frame-outer {
-          width: 100%;
+          width: 50%;
+        }
+      }
+      @media (min-width: 768px) {
+        .anim-frame-outer {
+          width: 33.33%;
+        }
+      }
+      @media (min-width: 1024px) {
+        .anim-frame-outer {
+          width: 25%;
+        }
+      }
+      @media (min-width: 1280px) {
+        .anim-frame-outer {
+          width: 20%;
         }
       }
     </style>
@@ -165,8 +186,7 @@
   <body>
     <h1 class="heading">CSS Animations</h1>
     <div class="anim-list">
-      <% animations.forEach(({name, div, source}) => { %>
-      <div class="anim-frame-outer">
+      <% animations.forEach(({name, div, source}) => { %><div class="anim-frame-outer">
         <div class="anim-frame-inner">
           <div class="anim-name-outer">
             <label class="anim-name-label">
@@ -188,15 +208,12 @@
           </div>
           <div class="anim-source-outer">
             <div class="anim-source-inner">
-              <pre class="anim-source-pre">
-<% source.split("\n").forEach((line) => { %>
-<code><%= line %></code><% }) %>
-              </pre>
+              <pre class="anim-source-pre"><% source.split("\n").forEach((line) => { %>
+<code><%= line %></code><% }) %></pre>
             </div>
           </div>
         </div>
-      </div>
-      <% }) %>
+      </div><% }) %>
     </div>
     <% if (injectedScript) { %>
     <script>

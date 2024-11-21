@@ -4,10 +4,6 @@ const ejs = require("ejs");
 
 const configPath = process.env.CONFIG_PATH || "config.json";
 
-// const templatePath = path.join(homeDir, "template.ejs");
-// const animationsDir = path.join(homeDir, "animations/");
-// const outputPath = path.join(homeDir, "index.html");
-
 function generateIndex({ config, injectedScript } = {}) {
   const templatePath = path.join(__dirname, config.templatePath);
   const animationsDir = path.join(__dirname, config.animationsDir);

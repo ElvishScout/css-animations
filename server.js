@@ -9,7 +9,7 @@ const configPath = process.env.CONFIG_PATH || "config.json";
 const host = process.env.HOST || "localhost";
 const port = (process.env.PORT && parseInt(process.env.PORT)) ?? 8080;
 
-let indexText;
+let indexText = "";
 
 const connectedClients = [];
 const server = http.createServer((request, response) => {

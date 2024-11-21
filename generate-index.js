@@ -15,7 +15,7 @@ function generateIndex({ config, injectedScript } = {}) {
   const template = ejs.compile(fs.readFileSync(templatePath).toString());
   const animations = fs.readdirSync(animationsDir).map((file) => {
     const fileText = fs.readFileSync(path.join(animationsDir, file)).toString().replace(/\r/g, "");
-    const name = /^(.*)\./.exec(file)?.[1] || "";
+    const name = (/^(.*)\./.exec(file)?.[1] || "").replace(/_/g, " ");
     const style = /<style.*?<\/style>/is.exec(fileText)?.[0] || "";
     const div = /<div.*<\/div>/is.exec(fileText)?.[0] || "";
     const source = fileText

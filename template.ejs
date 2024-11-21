@@ -188,7 +188,10 @@
           </div>
           <div class="anim-source-outer">
             <div class="anim-source-inner">
-              <pre class="anim-source-pre"><%- source %></pre>
+              <pre class="anim-source-pre">
+<% source.split("\n").forEach((line) => { %>
+<code><%= line %></code><% }) %>
+              </pre>
             </div>
           </div>
         </div>

@@ -1,7 +1,9 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
 const ejs = require("ejs");
-const { minify } = require("html-minifier");
+const Prism = require("prismjs");
+const HtmlMinifier = require("html-minifier");
+const prismCssPath = require.resolve("prismjs/themes/prism.css");
 
 const configPath = process.env.CONFIG_PATH ?? path.join(__dirname, "config.json");
 
@@ -70,6 +72,9 @@ const generateIndex = async (injectedScript = "") => {
     .sort((a, b) => a.index - b.index)
     .map(({ source }) => source);
 
+  const prismCss = `<style>${await fs.readFile(prismCssPath)}</style>`;
+  stylesheets.unshift(prismCss);
+
   const animations = (
     await Promise.all(
       (
@@ -88,14 +93,14 @@ const generateIndex = async (injectedScript = "") => {
             /^\s*(<div.+<\/div>)?\s*(<style.+<\/style>)?\s*$/is.exec(source)
           );
 
-          return { index, name, div, style, source };
+          return { index, name, div, style, source: Prism.highlight(source, Prism.languages.html) };
         })
     )
   )
     .sort((a, b) => a.index - b.index)
     .map(({ name, div, style, source }) => ({ name, div, style, source }));
 
-  return minify(template({ stylesheets, animations, injectedScript, github }), {
+  return HtmlMinifier.minify(template({ stylesheets, animations, injectedScript, github }), {
     collapseWhitespace: true,
     minifyCSS: true,
     removeComments: true,

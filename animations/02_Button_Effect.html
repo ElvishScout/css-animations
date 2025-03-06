@@ -1,0 +1,120 @@
+<div class="button-effect">
+  <div class="button-effect-list">
+    <button class="button-effect-button button-effect-flat" type="button">Flat</button>
+    <button class="button-effect-button button-effect-wave" type="button">
+      <span class="button-effect-wave-text">Wave</span>
+      <div class="button-effect-wave-shade"></div>
+    </button>
+    <button class="button-effect-button button-effect-raised" type="button">Raised</button>
+    <button class="button-effect-button button-effect-membrane" type="button">Membrane</button>
+  </div>
+</div>
+<style>
+  .button-effect-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: stretch;
+    align-items: end;
+  }
+  .button-effect-button {
+    font: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    user-select: none;
+    cursor: pointer;
+  }
+  .button-effect-flat {
+    padding: 0 0.5rem;
+    border: 2px solid var(--color-green-700);
+    border-radius: 0.25rem;
+  }
+  .button-effect-flat:hover {
+    background-color: var(--color-green-100);
+  }
+  .button-effect-flat:active {
+    background-color: var(--color-green-50);
+  }
+  .button-effect-wave {
+    position: relative;
+    padding: 0 0.5rem;
+    border: 2px solid var(--color-green-700);
+    border-radius: 0.25rem;
+    overflow: hidden;
+    scale: 1;
+    transition: scale 100ms cubic-bezier(0, 2, 1, 2);
+  }
+  .button-effect-wave:hover {
+    background-color: var(--color-green-100);
+  }
+  .button-effect-wave:active {
+    scale: 0.95;
+    transition: none;
+  }
+  .button-effect-wave:active > .button-effect-wave-shade {
+    width: 0;
+    opacity: 1;
+    transition: none;
+  }
+  .button-effect-wave-text {
+    position: relative;
+  }
+  .button-effect-wave-shade {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    opacity: 0;
+    translate: -50% -50%;
+    background-color: var(--color-green-400);
+    border-radius: 50%;
+    transition: width 200ms linear, opacity 200ms ease-in;
+    z-index: -1;
+  }
+  .button-effect-wave-shade::after {
+    content: "";
+    display: block;
+    margin-top: 100%;
+  }
+  .button-effect-raised {
+    padding: 0 0.5rem;
+    border: solid;
+    border-width: 1px 3px 3px 1px;
+    border-color: var(--color-green-500) var(--color-green-700) var(--color-green-700)
+      var(--color-green-500);
+    border-radius: 0.25rem;
+  }
+  .button-effect-raised:hover {
+    background-color: var(--color-green-100);
+  }
+  .button-effect-raised:active {
+    border-width: 3px 1px 1px 3px;
+    border-color: var(--color-green-700) var(--color-green-500) var(--color-green-500)
+      var(--color-green-700);
+    background-color: var(--color-green-50);
+  }
+  .button-effect-membrane {
+    padding: 0 0.25rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 0.75rem;
+    line-break: anywhere;
+    overflow: hidden;
+    border: 2px solid;
+    border-color: var(--color-green-500) var(--color-green-700) var(--color-green-700)
+      var(--color-green-500);
+    border-radius: 1rem;
+    background: radial-gradient(circle at 0% 0%, var(--color-green-50), var(--color-green-400));
+  }
+  .button-effect-membrane:hover {
+    background: radial-gradient(circle at 0% 0%, var(--color-green-50), var(--color-green-500));
+  }
+  .button-effect-membrane:active {
+    background: radial-gradient(
+      circle at 62.5% 62.5%,
+      var(--color-green-50),
+      var(--color-green-400)
+    );
+  }
+</style>

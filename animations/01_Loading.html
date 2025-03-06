@@ -1,0 +1,139 @@
+<div class="loading">
+  <div class="loading-mode">
+    <label class="loading-mode-label">
+      <div class="loading-mode-tab">
+        <input class="loading-mode-radio" type="radio" name="loading-radio" checked />
+        Stop
+      </div>
+    </label>
+    <label class="loading-mode-label">
+      <div class="loading-mode-tab">
+        <input class="loading-mode-radio" type="radio" name="loading-radio" value="linear" />
+        Linear
+      </div>
+    </label>
+    <label class="loading-mode-label">
+      <div class="loading-mode-tab">
+        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease" />
+        Ease
+      </div>
+    </label>
+    <label class="loading-mode-label">
+      <div class="loading-mode-tab">
+        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease-in" />
+        Ease-In
+      </div>
+    </label>
+    <label class="loading-mode-label">
+      <div class="loading-mode-tab">
+        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease-out" />
+        Ease-Out
+      </div>
+    </label>
+    <label class="loading-mode-label">
+      <div class="loading-mode-tab">
+        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease-in-out" />
+        Ease-In-Out
+      </div>
+    </label>
+  </div>
+  <div class="loading-area">
+    <div class="loading-circle"></div>
+  </div>
+</div>
+<style>
+  @keyframes loading-rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .loading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    height: 100%;
+  }
+  .loading-mode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .loading-mode::after {
+    content: "";
+    flex-grow: 8;
+    min-width: 12.5%;
+  }
+  .loading-mode:has(.loading-mode-radio[value="linear"]:checked) ~ .loading-area > .loading-circle {
+    animation: loading-rotate 1s linear 0s infinite normal forwards;
+  }
+  .loading-mode:has(.loading-mode-radio[value="ease"]:checked) ~ .loading-area > .loading-circle {
+    animation: loading-rotate 1s ease 0s infinite normal forwards;
+  }
+  .loading-mode:has(.loading-mode-radio[value="ease-in"]:checked)
+    ~ .loading-area
+    > .loading-circle {
+    animation: loading-rotate 1s ease-in 0s infinite normal forwards;
+  }
+  .loading-mode:has(.loading-mode-radio[value="ease-out"]:checked)
+    ~ .loading-area
+    > .loading-circle {
+    animation: loading-rotate 1s ease-out 0s infinite normal forwards;
+  }
+  .loading-mode:has(.loading-mode-radio[value="ease-in-out"]:checked)
+    ~ .loading-area
+    > .loading-circle {
+    animation: loading-rotate 1s ease-in-out 0s infinite normal forwards;
+  }
+  .loading-mode-label {
+    display: contents;
+  }
+  .loading-mode-tab {
+    padding: 0 0.5rem;
+    flex-grow: 1;
+    text-align: center;
+    border: 2px solid var(--color-green-700);
+    border-radius: calc(infinity * 1px);
+    cursor: pointer;
+    user-select: none;
+  }
+  .loading-mode-tab:hover {
+    background-color: var(--color-green-100);
+  }
+  .loading-mode-tab:active {
+    background-color: var(--color-green-50);
+  }
+  .loading-mode-tab:has(.loading-mode-radio:checked) {
+    color: var(--color-white);
+    background-color: var(--color-green-600);
+  }
+  .loading-mode-radio {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .loading-area {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+  }
+  .loading-circle {
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: conic-gradient(var(--color-white), var(--color-green-600));
+  }
+  .loading-circle::after {
+    content: "";
+    position: absolute;
+    inset: 12.5%;
+    border-radius: 50%;
+    background-color: var(--color-white);
+    z-index: 1;
+  }
+</style>

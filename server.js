@@ -1,65 +1,67 @@
 const http = require("node:http");
-const fs = require("node:fs");
 const path = require("node:path");
 const url = require("node:url");
 const chokidar = require("chokidar");
 const { generateIndex } = require("./generate-index");
 
-const configPath = process.env.CONFIG_PATH || "config.json";
 const host = process.env.HOST || "localhost";
 const port = (process.env.PORT && parseInt(process.env.PORT)) ?? 8080;
 
-let indexText = "";
+/**
+ * @param {{host?: string; port?: number;}} options
+ * @returns {Promise<void>}
+ */
+const start = async ({ host, port }) => {
+  const injectedScript = (() => {
+    const source = new EventSource("/refresh");
+    source.addEventListener("refresh", () => {
+      location.reload();
+    });
+  }).toString();
 
-const connectedClients = [];
-const server = http.createServer((request, response) => {
-  const path = url.parse(request.url).pathname;
-  switch (path) {
-    case "/":
-      response.writeHead(200, { "Content-Type": "text/html" });
-      response.end(indexText);
-      return;
-    case "/refresh":
-      connectedClients.push(response);
-      response.writeHead(200, {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        "Access-Control-Allow-Origin": "*",
-      });
-      response.write("retry: 10000\n");
-      response.write("event: refresh\n");
-      request.on("close", () => {
-        connectedClients.splice(connectedClients.indexOf(response), 1);
-      });
-      return;
-    case "/favicon.ico":
-      return;
-  }
-});
+  /** @type {Set<http.ServerResponse>} */
+  const connectedClients = new Set();
+  let indexText = "";
 
-const injectedScript = (() => {
-  const source = new EventSource("/refresh");
-  source.addEventListener("refresh", () => {
-    location.reload();
+  const server = http.createServer((request, response) => {
+    const path = url.parse(request.url).pathname;
+    switch (path) {
+      case "/":
+        response.writeHead(200, { "content-type": "text/html" });
+        response.end(indexText);
+        break;
+      case "/refresh":
+        connectedClients.add(response);
+        response.writeHead(200, {
+          "content-type": "text/event-stream",
+          "cache-control": "no-cache",
+          connection: "keep-alive",
+          "access-control-allow-origin": "*",
+        });
+        response.write("retry: 10000\n");
+        response.write("event: refresh\n");
+        request.on("close", () => {
+          connectedClients.delete(response);
+        });
+        break;
+    }
   });
-}).toString();
 
-const update = () => {
-  const config = JSON.parse(fs.readFileSync(configPath).toString());
-  indexText = generateIndex({ config, injectedScript });
+  indexText = await generateIndex(injectedScript);
+
+  chokidar.watch(__dirname, { ignoreInitial: true }).on("all", async (_, file) => {
+    indexText = await generateIndex(injectedScript);
+    for (const client of connectedClients) {
+      client.write("data: refresh\n\n");
+    }
+    if (file) {
+      console.log(`Update ${path.basename(file)}`);
+    }
+  });
+
+  server.listen(port, host);
 };
 
-update();
-chokidar.watch(__dirname, { ignoreInitial: true }).on("all", (_, file) => {
-  update();
-  connectedClients.forEach((client) => {
-    client.write("data: refresh\n\n");
-  });
-  if (file) {
-    console.log(`Update ${path.basename(file)}`);
-  }
+start({ host, port }).then(() => {
+  console.log(`Server listening on http://${host}:${port}`);
 });
-
-server.listen(port, host);
-console.log(`Server listening on http://${host}:${port}`);

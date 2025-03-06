@@ -1,0 +1,82 @@
+<div class="custom-switch">
+  <div class="custom-switch-switch">
+    <label class="custom-switch-label">
+      <input class="custom-switch-check" type="checkbox" />
+      <div class="custom-switch-bar">
+        <div class="custom-switch-shade"></div>
+        <div class="custom-switch-ball"></div>
+      </div>
+      <span class="custom-switch-text-on">Show</span>
+      <span class="custom-switch-text-off">Hide</span>
+    </label>
+  </div>
+  <div class="custom-switch-content">
+    Lorem ipsum dolor sit amet at gubergren. Duis sea justo magna accusam labore stet amet sanctus
+    eu accusam clita duo. Ut consequat clita at amet aliquyam takimata duis aliquam sit.
+  </div>
+</div>
+<style>
+  .custom-switch-switch:has(.custom-switch-check:checked) ~ .custom-switch-content {
+    opacity: 1;
+  }
+  .custom-switch-label {
+    user-select: none;
+    cursor: pointer;
+  }
+  .custom-switch-bar {
+    position: relative;
+    display: inline-block;
+    margin: 0.25rem 0.75rem;
+    padding: 0 0.25rem;
+    width: 1.25rem;
+    height: 0.5rem;
+    border-radius: calc(infinity * 1px);
+    vertical-align: middle;
+    background-color: var(--color-gray-200);
+    box-sizing: content-box;
+  }
+  .custom-switch-shade {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 -0.25rem;
+    padding: 0 0.25rem;
+    width: 0;
+    height: 100%;
+    border-radius: calc(infinity * 1px);
+    background-color: var(--color-green-300);
+    box-sizing: content-box;
+    transition: width 0.2s ease-in-out;
+  }
+  .custom-switch-ball {
+    display: inline-block;
+    vertical-align: top;
+    margin: -0.125em -0.375rem;
+    left: 0;
+    top: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: var(--color-green-600);
+  }
+  .custom-switch-check {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .custom-switch-check:checked ~ .custom-switch-bar > .custom-switch-shade {
+    width: 100%;
+  }
+  .custom-switch-check:checked ~ .custom-switch-text-on {
+    display: unset;
+  }
+  .custom-switch-check:checked ~ .custom-switch-text-off {
+    display: none;
+  }
+  .custom-switch-text-on {
+    display: none;
+  }
+  .custom-switch-content {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+</style>

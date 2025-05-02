@@ -1,46 +1,48 @@
-<div class="loading">
-  <div class="loading-mode">
-    <label class="loading-mode-label">
-      <div class="loading-mode-tab">
-        <input class="loading-mode-radio" type="radio" name="loading-radio" checked />
-        Stop
-      </div>
-    </label>
-    <label class="loading-mode-label">
-      <div class="loading-mode-tab">
-        <input class="loading-mode-radio" type="radio" name="loading-radio" value="linear" />
-        Linear
-      </div>
-    </label>
-    <label class="loading-mode-label">
-      <div class="loading-mode-tab">
-        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease" />
-        Ease
-      </div>
-    </label>
-    <label class="loading-mode-label">
-      <div class="loading-mode-tab">
-        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease-in" />
-        Ease-In
-      </div>
-    </label>
-    <label class="loading-mode-label">
-      <div class="loading-mode-tab">
-        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease-out" />
-        Ease-Out
-      </div>
-    </label>
-    <label class="loading-mode-label">
-      <div class="loading-mode-tab">
-        <input class="loading-mode-radio" type="radio" name="loading-radio" value="ease-in-out" />
-        Ease-In-Out
-      </div>
-    </label>
+<template>
+  <div class="container">
+    <div class="mode">
+      <label class="mode-label">
+        <div class="mode-tab">
+          <input class="mode-radio" type="radio" name="radio" checked />
+          Stop
+        </div>
+      </label>
+      <label class="mode-label">
+        <div class="mode-tab">
+          <input class="mode-radio" type="radio" name="radio" value="linear" />
+          Linear
+        </div>
+      </label>
+      <label class="mode-label">
+        <div class="mode-tab">
+          <input class="mode-radio" type="radio" name="radio" value="ease" />
+          Ease
+        </div>
+      </label>
+      <label class="mode-label">
+        <div class="mode-tab">
+          <input class="mode-radio" type="radio" name="radio" value="ease-in" />
+          Ease-In
+        </div>
+      </label>
+      <label class="mode-label">
+        <div class="mode-tab">
+          <input class="mode-radio" type="radio" name="radio" value="ease-out" />
+          Ease-Out
+        </div>
+      </label>
+      <label class="mode-label">
+        <div class="mode-tab">
+          <input class="mode-radio" type="radio" name="radio" value="ease-in-out" />
+          Ease-In-Out
+        </div>
+      </label>
+    </div>
+    <div class="area">
+      <div class="circle"></div>
+    </div>
   </div>
-  <div class="loading-area">
-    <div class="loading-circle"></div>
-  </div>
-</div>
+</template>
 <style>
   @keyframes loading-rotate {
     from {
@@ -50,48 +52,42 @@
       transform: rotate(360deg);
     }
   }
-  .loading {
+  .container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     width: 100%;
     height: 100%;
   }
-  .loading-mode {
+  .mode {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
   }
-  .loading-mode::after {
+  .mode::after {
     content: "";
     flex-grow: 8;
     min-width: 12.5%;
   }
-  .loading-mode:has(.loading-mode-radio[value="linear"]:checked) ~ .loading-area > .loading-circle {
+  .mode:has(.mode-radio[value="linear"]:checked) ~ .area > .circle {
     animation: loading-rotate 1s linear 0s infinite normal forwards;
   }
-  .loading-mode:has(.loading-mode-radio[value="ease"]:checked) ~ .loading-area > .loading-circle {
+  .mode:has(.mode-radio[value="ease"]:checked) ~ .area > .circle {
     animation: loading-rotate 1s ease 0s infinite normal forwards;
   }
-  .loading-mode:has(.loading-mode-radio[value="ease-in"]:checked)
-    ~ .loading-area
-    > .loading-circle {
+  .mode:has(.mode-radio[value="ease-in"]:checked) ~ .area > .circle {
     animation: loading-rotate 1s ease-in 0s infinite normal forwards;
   }
-  .loading-mode:has(.loading-mode-radio[value="ease-out"]:checked)
-    ~ .loading-area
-    > .loading-circle {
+  .mode:has(.mode-radio[value="ease-out"]:checked) ~ .area > .circle {
     animation: loading-rotate 1s ease-out 0s infinite normal forwards;
   }
-  .loading-mode:has(.loading-mode-radio[value="ease-in-out"]:checked)
-    ~ .loading-area
-    > .loading-circle {
+  .mode:has(.mode-radio[value="ease-in-out"]:checked) ~ .area > .circle {
     animation: loading-rotate 1s ease-in-out 0s infinite normal forwards;
   }
-  .loading-mode-label {
+  .mode-label {
     display: contents;
   }
-  .loading-mode-tab {
+  .mode-tab {
     padding: 0 0.5rem;
     flex-grow: 1;
     text-align: center;
@@ -100,35 +96,35 @@
     cursor: pointer;
     user-select: none;
   }
-  .loading-mode-tab:hover {
+  .mode-tab:hover {
     background-color: var(--color-green-100);
   }
-  .loading-mode-tab:active {
+  .mode-tab:active {
     background-color: var(--color-green-50);
   }
-  .loading-mode-tab:has(.loading-mode-radio:checked) {
+  .mode-tab:has(.mode-radio:checked) {
     color: var(--color-white);
     background-color: var(--color-green-600);
   }
-  .loading-mode-radio {
+  .mode-radio {
     position: absolute;
     width: 0;
     height: 0;
   }
-  .loading-area {
+  .area {
     display: flex;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
   }
-  .loading-circle {
+  .circle {
     position: relative;
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
     background: conic-gradient(var(--color-white), var(--color-green-600));
   }
-  .loading-circle::after {
+  .circle::after {
     content: "";
     position: absolute;
     inset: 12.5%;

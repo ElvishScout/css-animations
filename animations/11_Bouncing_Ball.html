@@ -1,19 +1,21 @@
-<div class="bouncing-ball">
-  <div class="bouncing-ball-control">
-    <label>
-      <input class="bouncing-ball-control-check" type="checkbox" />
-      <div class="bouncing-ball-control-button">
-        <span class="bouncing-ball-control-start">Start</span>
-        <span class="bouncing-ball-control-stop">Stop</span>
+<template>
+  <div class="bouncing-ball">
+    <div class="control">
+      <label>
+        <input class="control-check" type="checkbox" />
+        <div class="control-button">
+          <span class="control-start">Start</span>
+          <span class="control-stop">Stop</span>
+        </div>
+      </label>
+    </div>
+    <div class="container">
+      <div class="box">
+        <div class="ball"></div>
       </div>
-    </label>
-  </div>
-  <div class="bouncing-ball-container">
-    <div class="bouncing-ball-box">
-      <div class="bouncing-ball-ball"></div>
     </div>
   </div>
-</div>
+</template>
 <style>
   @keyframes bouncing-ball-vertical {
     from {
@@ -38,32 +40,24 @@
     width: 100%;
     height: 100%;
   }
-  .bouncing-ball-control:has(.bouncing-ball-control-check:checked)
-    ~ .bouncing-ball-container
-    .bouncing-ball-row {
+  .control:has(.control-check:checked) ~ .container .row {
     animation-play-state: running;
   }
-  .bouncing-ball-control:has(.bouncing-ball-control-check:checked)
-    ~ .bouncing-ball-container
-    .bouncing-ball-ball {
+  .control:has(.control-check:checked) ~ .container .ball {
     animation-play-state: running;
   }
-  .bouncing-ball-control-check {
+  .control-check {
     position: absolute;
     width: 0;
     height: 0;
   }
-  .bouncing-ball-control-check:checked
-    ~ .bouncing-ball-control-button
-    > .bouncing-ball-control-start {
+  .control-check:checked ~ .control-button > .control-start {
     display: none;
   }
-  .bouncing-ball-control-check:checked
-    ~ .bouncing-ball-control-button
-    > .bouncing-ball-control-stop {
+  .control-check:checked ~ .control-button > .control-stop {
     display: unset;
   }
-  .bouncing-ball-control-button {
+  .control-button {
     margin: 0.125rem;
     padding: 0 0.5rem;
     width: 4rem;
@@ -73,23 +67,23 @@
     cursor: pointer;
     user-select: none;
   }
-  .bouncing-ball-control-button:hover {
+  .control-button:hover {
     background-color: var(--color-green-100);
   }
-  .bouncing-ball-control-button:active {
+  .control-button:active {
     background-color: var(--color-green-50);
   }
-  .bouncing-ball-control-stop {
+  .control-stop {
     display: none;
   }
-  .bouncing-ball-container {
+  .container {
     position: relative;
     padding: 1rem 0;
     flex-grow: 1;
     flex-basis: 0;
     min-height: 0;
   }
-  .bouncing-ball-box {
+  .box {
     position: relative;
     aspect-ratio: 1 / 1;
     left: 50%;
@@ -103,17 +97,13 @@
     border: 2px solid var(--color-green-700);
     box-sizing: border-box;
   }
-  .bouncing-ball-ball {
+  .ball {
     position: relative;
     left: 0;
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    background: radial-gradient(
-      circle at 37.5% 37.5%,
-      var(--color-green-50),
-      var(--color-green-600)
-    );
+    background: radial-gradient(circle at 37.5% 37.5%, var(--color-green-50), var(--color-green-600));
     animation: bouncing-ball-horizontal 1280ms linear infinite alternate,
       bouncing-ball-vertical 720ms linear infinite alternate;
     animation-play-state: paused;

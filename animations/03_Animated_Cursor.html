@@ -1,5 +1,5 @@
-<div class="cursor-animations">
-  <div class="cursor-animations-info">
+<template>
+  <div class="info">
     <p>
       <span>Original author: </span> <a href="https://x.com/Snooa_o" target="_blank">@Snooa_o</a>
     </p>
@@ -12,41 +12,41 @@
       >
     </p>
   </div>
-  <div class="cursor-animations-list">
-    <div class="cursor-animations-list-item cursor-furina-default">default</div>
-    <div class="cursor-animations-list-item cursor-furina-default-2">default-2</div>
-    <div class="cursor-animations-list-item cursor-furina-pointer">pointer</div>
-    <div class="cursor-animations-list-item cursor-furina-ew-resize">ew-resize</div>
-    <div class="cursor-animations-list-item cursor-furina-ns-resize">ns-resize</div>
-    <div class="cursor-animations-list-item cursor-furina-nwse-resize">nwse-esize</div>
-    <div class="cursor-animations-list-item cursor-furina-nesw-resize">nesw-resize</div>
-    <div class="cursor-animations-list-item cursor-furina-move">move</div>
-    <div class="cursor-animations-list-item cursor-furina-text">text</div>
-    <div class="cursor-animations-list-item cursor-furina-help">help</div>
-    <div class="cursor-animations-list-item cursor-furina-not-allowed">not-allowed</div>
-    <div class="cursor-animations-list-item cursor-furina-wait">wait</div>
-    <div class="cursor-animations-list-item cursor-furina-progress">progress</div>
-    <div class="cursor-animations-list-item cursor-furina-alias">alias</div>
+  <div class="list">
+    <div class="list-item cursor-furina-default">default</div>
+    <div class="list-item cursor-furina-default-2">default-2</div>
+    <div class="list-item cursor-furina-pointer">pointer</div>
+    <div class="list-item cursor-furina-ew-resize">ew-resize</div>
+    <div class="list-item cursor-furina-ns-resize">ns-resize</div>
+    <div class="list-item cursor-furina-nwse-resize">nwse-esize</div>
+    <div class="list-item cursor-furina-nesw-resize">nesw-resize</div>
+    <div class="list-item cursor-furina-move">move</div>
+    <div class="list-item cursor-furina-text">text</div>
+    <div class="list-item cursor-furina-help">help</div>
+    <div class="list-item cursor-furina-not-allowed">not-allowed</div>
+    <div class="list-item cursor-furina-wait">wait</div>
+    <div class="list-item cursor-furina-progress">progress</div>
+    <div class="list-item cursor-furina-alias">alias</div>
   </div>
-</div>
+</template>
 <style>
-  .cursor-animations-info {
+  .info {
     margin-bottom: 0.5rem;
   }
-  .cursor-animations-info > p {
+  .info > p {
     margin: 0.125rem 0;
   }
-  .cursor-animations-list {
+  .list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
   }
-  .cursor-animations-list::after {
+  .list::after {
     content: "";
     flex-grow: 8;
     min-width: 12.5%;
   }
-  .cursor-animations-list-item {
+  .list-item {
     flex-grow: 1;
     padding: 0 0.5rem;
     text-align: center;
@@ -54,7 +54,7 @@
     border-radius: calc(infinity * 1px);
     user-select: none;
   }
-  .cursor-animations-list-item:hover {
+  .list-item:hover {
     background-color: var(--color-green-100);
   }
   /* begin furina-cursor.css */

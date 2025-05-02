@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS Animations</title>
     <% stylesheets.forEach((source) => { %> <%- source %> <% }) %>
-    <!-- I am here to prevent Prettier from breaking ejs -->
-    <% animations.forEach(({style}) => { %> <% if (style) { %> <%- style %> <% } %> <% }) %>
   </head>
   <body>
     <div class="heading">
@@ -16,18 +14,13 @@
       <% } %>
     </div>
     <div class="anim-list">
-      <% animations.forEach(({name, div, source}) => { %> <% if (div) { %>
+      <% animations.forEach(({name, source, highlight}) => { %>
       <div class="anim-frame-outer">
         <div class="anim-frame-inner">
           <div class="anim-name-outer">
             <label class="anim-name-label">
               <div class="anim-name-inner">
-                <input
-                  class="anim-name-check"
-                  type="checkbox"
-                  name="anim-name-check"
-                  value="custon-switch-bar"
-                />
+                <input class="anim-name-check" type="checkbox" name="anim-name-check" value="custon-switch-bar" />
                 <span class="anim-name-text"><%- name %></span>
                 <span class="anim-name-view-source">View Source</span>
                 <span class="anim-name-close-source">Close</span>
@@ -35,19 +28,19 @@
             </label>
           </div>
           <div class="anim-box-outer">
-            <div class="anim-box-inner"><%- div %></div>
+            <div class="anim-box-inner"><%- source %></div>
           </div>
           <div class="anim-source-outer">
             <div class="anim-source-inner">
               <pre
                 class="anim-source-pre"
-              ><code><% source.split("\n").forEach((line) => { %><span class="anim-source-line"><%- line %></span>
+              ><code><% highlight.split("\n").forEach((line) => { %><span class="anim-source-line"><%- line %></span>
 <% }) %></code></pre>
             </div>
           </div>
         </div>
       </div>
-      <% } %> <% }) %>
+      <% }) %>
     </div>
     <% if (injectedScript) { %>
     <script>
